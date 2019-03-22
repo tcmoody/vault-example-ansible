@@ -1,0 +1,56 @@
+---
+
+- name: Download Vault executable
+  get_url:
+    url: https://releases.hashicorp.com/vault/1.1.0/vault_1.1.0_linux_amd64.zip
+    dest: /tmp/vault.zip
+
+- name: Create vault group
+  group:
+    name: vault
+
+- name: Create vault user
+  user:
+    name: vault
+    group: vault
+
+- name: Unzip vault to /usr/local/bin
+  unarchive:
+    src: /tmp/vault.zip
+    dest: /usr/local/bin
+    remote_src: yes
+    group: vault
+    owner: vault
+
+- name: Create installation directories for vault config and logging
+  file:
+    path: "{{ item }}"
+    state: directory
+    group: consul
+    owner: consul
+  with_items:
+    - /opt/vault
+    - /etc/vault.d
+
+- name: Copy vault config over
+  copy:
+    src: vault.hcl
+    dest: /etc/vault.d/vault.hcl
+    owner: vault
+    group: vault
+
+- name: Copy over vault systemctl config
+  copy:
+    src: vault.service
+    dest: /lib/systemd/system/vault.service
+    group: vault
+    owner: vault
+
+- name: Restart systemctl daemon
+  shell: systemctl daemon-reload
+
+- name: Enable vault server
+  shell: systemctl enable vault
+
+- name: Start vault server
+  shell: systemctl start vault

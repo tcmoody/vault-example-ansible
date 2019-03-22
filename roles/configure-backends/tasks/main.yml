@@ -1,0 +1,18 @@
+---
+- name: Login to vault
+  shell: VAULT_ADDR={{ VAULT_ADDR }} /usr/local/bin/vault login "{{ VAULT_TOKEN }}"
+
+- name: Enable userpass
+  shell: VAULT_ADDR={{ VAULT_ADDR }} /usr/local/bin/vault auth enable userpass
+
+- name: Enable AWS secrets backend
+  shell: VAULT_ADDR={{ VAULT_ADDR }} /usr/local/bin/vault secrets enable aws
+
+- name: Write AWS creds to Vault
+  shell: VAULT_ADDR={{ VAULT_ADDR }} /usr/local/bin/vault write aws/config/root access_key={{ access_key_id }} secret_key={{ secret_access_key }} region=us-east-1
+
+- name: Write ec2-read IAM role to Vault
+  shell: VAULT_ADDR={{ VAULT_ADDR }} /usr/local/bin/vault write aws/roles/ec2-read credential_type=iam_user policy_arns=arn:aws:iam::aws:policy/IAMReadOnlyAccess,arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+
+- name: Add a vault user
+  shell: VAULT_ADDR={{ VAULT_ADDR }} /usr/local/bin/vault write auth/userpass/users/example-user password=changeme

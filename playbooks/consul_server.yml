@@ -1,0 +1,8 @@
+- hosts: tag_Consul_Server_true
+  roles:
+    - consul
+  become: yes
+  any_errors_fatal: true
+  vars:
+    - is_server: "true"
+    - bootstrap_expect: "3"

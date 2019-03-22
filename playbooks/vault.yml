@@ -1,0 +1,5 @@
+- hosts: tag_Consul_Agent_true
+  roles:
+    - vault
+  become: yes
+  any_errors_fatal: true

@@ -1,0 +1,56 @@
+---
+
+- name: Download Consul executable
+  get_url:
+    url: https://releases.hashicorp.com/consul/1.4.3/consul_1.4.3_linux_amd64.zip
+    dest: /tmp/consul.zip
+
+- name: Create consul group
+  group:
+    name: consul
+
+- name: Create consul user
+  user:
+    name: consul
+    group: consul
+
+- name: Unzip consul to /usr/local/bin
+  unarchive:
+    src: /tmp/consul.zip
+    dest: /usr/local/bin
+    remote_src: yes
+    group: consul
+    owner: consul
+
+- name: Create installation directories for consul config and logging
+  file:
+    path: "{{ item }}"
+    state: directory
+    group: consul
+    owner: consul
+  with_items:
+    - /opt/consul
+    - /etc/consul.d
+
+- name: Copy consul config over
+  template:
+    src: consul.j2
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+
+- name: Copy over consul systemctl config
+  copy:
+    src: consul.service
+    dest: /lib/systemd/system/consul.service
+    group: consul
+    owner: consul
+
+- name: Restart systemctl daemon
+  shell: systemctl daemon-reload
+
+- name: Enable consul agent
+  shell: systemctl enable consul
+
+- name: Start consul agent
+  shell: systemctl start consul

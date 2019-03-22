@@ -1,0 +1,10 @@
+- hosts: tag_Name_vault_server_0
+  roles:
+    - configure-backends
+  become: yes
+  any_errors_fatal: true
+  vars:
+    VAULT_ADDR: 'http://127.0.0.1:8200'
+    VAULT_TOKEN: ''
+    access_key_id: ''
+    secret_access_key: ''

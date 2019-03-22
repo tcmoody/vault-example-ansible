@@ -1,0 +1,14 @@
+tag_Consul_Server_true:
+  bastion_host: tag_Name_vault_example_bastion
+  bastion_key: provisionkey.vault-example-vpc
+  target_key: provisionkey.consul-example-instance
+
+tag_Consul_Agent_true:
+  bastion_host: tag_Name_vault_example_bastion
+  bastion_key: provisionkey.vault-example-vpc
+  target_key: provisionkey.vault-example-instance
+
+tag_Name_vault_server_0:
+  bastion_host: tag_Name_vault_example_bastion
+  bastion_key: provisionkey.vault-example-vpc
+  target_key: provisionkey.vault-example-instance
