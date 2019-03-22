@@ -1,5 +1,5 @@
 1) Run consul_server playbook
-EC2_INI_PATH=ec2-private.ini AWS_PROFILE='' ANSIBLE_SSH_ARGS="-F dynamic_ansible_ssh.cfg" ansible-playbook playbooks/consul_server.yml -i ec2.py
+`EC2_INI_PATH=ec2-private.ini AWS_PROFILE='' ANSIBLE_SSH_ARGS="-F dynamic_ansible_ssh.cfg" ansible-playbook playbooks/consul_server.yml -i ec2.py`
 
 2) Run consul_agent playbook
 EC2_INI_PATH=ec2-private.ini AWS_PROFILE='' ANSIBLE_SSH_ARGS="-F dynamic_ansible_ssh.cfg" ansible-playbook playbooks/consul_agent.yml -i ec2.py
